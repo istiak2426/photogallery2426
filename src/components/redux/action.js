@@ -1,6 +1,6 @@
 // Middleware
 import * as actionType from "../../components/redux/actionType"
-import { baseUrl } from "./base"
+
 import axios from 'axios'
 
 export const addComment  = (photoId, author, comment)=> dispatch => {
@@ -13,10 +13,10 @@ const newComment = {
 	}
 	newComment.date = new Date().toISOString();
 
-	const devEnv = process.env.NODE_ENV !== "production";
-	const { REACT_APP_DEV_URL, REACT_APP_PROD_URL } = process.env;
+	const { REACT_APP_DEV_URL } = process.env;
 
-	axios.post(`${devEnv ? REACT_APP_DEV_URL : REACT_APP_PROD_URL}/comments`, newComment)
+	axios.post(`${REACT_APP_DEV_URL }/comments`, newComment)
+
 	.then(res => res.data)
 	.then (comment => dispatch(commentConcat(comment)))
 }
@@ -38,10 +38,11 @@ export const loadCommets = comments =>({
 export const fetchComments  = () => dispatch => {
 	dispatch(commentLoading());
 	
-	const devEnv = process.env.NODE_ENV !== "production";
-	const { REACT_APP_DEV_URL, REACT_APP_PROD_URL } = process.env;
 
-	axios.get(`${devEnv ? REACT_APP_DEV_URL : REACT_APP_PROD_URL}/comments`)
+	const { REACT_APP_DEV_URL } = process.env;
+
+	axios.get(`${ REACT_APP_DEV_URL }/comments`)
+
 	.then(res => res.data)
 	.then(comments => dispatch(loadCommets(comments)))
 }
@@ -67,16 +68,9 @@ export const fetchPhotos = () =>{
 
 		
 
-		const { REACT_APP_DEV_URL, REACT_APP_PROD_URL } = process.env;
+		const { REACT_APP_DEV_URL } = process.env;
 
-		console.log(REACT_APP_DEV_URL,REACT_APP_PROD_URL)
-
-		console.log(process.env.NODE_ENV)
-
-		const devEnv = process.env.NODE_ENV !== "production";
-		console.log(devEnv);
-
-		axios.get( `${devEnv ? REACT_APP_DEV_URL : REACT_APP_PROD_URL}/photos`)
+		axios.get( `${ REACT_APP_DEV_URL }/photos`)
 		.then(res => res.data)
 		.then(photos => dispatch(loadPhotos(photos)) )
 		.catch(error => dispatch(photosFailed(error.message)))

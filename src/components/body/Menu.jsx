@@ -5,7 +5,7 @@ import PhotoItem from "./PhotoItem";
 import PhotoDetail from "./PhotoDetail";
 import Loading from "./Loading";
 import { addComment, fetchPhotos, fetchComments } from "../redux/action";
-import { baseUrl } from "../redux/base";
+
 
 import {connect} from "react-redux"
  
@@ -64,16 +64,15 @@ class Photo extends Component {
 		this.props.fetchPhotos();
 		this.props.fetchComments();
 
-		const devEnv = process.env.NODE_ENV !== "production";
-		const { REACT_APP_DEV_URL, REACT_APP_PROD_URL } = process.env;
+		const { REACT_APP_DEV_URL } = process.env;
 		
-		axios.get(`${devEnv ? REACT_APP_DEV_URL : REACT_APP_PROD_URL}/photos`)
+		axios.get(`${ REACT_APP_DEV_URL }/photos`)
 		.then(response=> response.data)
 		.then(data => this.setState({
 			allItem: data
 		}))
 
-		axios.get(`${devEnv ? REACT_APP_DEV_URL : REACT_APP_PROD_URL}/photos`)
+		axios.get(`${REACT_APP_DEV_URL}/photos`)
 		.then(response=> response.data)
 		.then(data => this.setState({
 			filterItem: data
@@ -164,3 +163,4 @@ class Photo extends Component {
 }
 
 export default connect(mapStateToProps, mapDispatchToprops)(Photo);
+ 
